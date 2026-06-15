@@ -4,7 +4,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 ENTITY p4 IS 
 PORT (
 	N1, N2 : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-	S : INOUT STD_LOGIC_VECTOR(4 DOWNTO 0);
+	D : INOUT STD_LOGIC_VECTOR(4 DOWNTO 0);
 	MA : OUT STD_LOGIC;
 	ME, I: INOUT STD_LOGIC
 );
@@ -12,24 +12,24 @@ END p4;
 
 ARCHITECTURE ecu OF p4 IS
 
-	SIGNAL C0, C1, C2 : STD_LOGIC;
+	SIGNAL P0, P1, P2 : STD_LOGIC;
 
 BEGIN
 	
-	S(0) <= N1(0) XOR N2(0);
-	C0 <= N1(0) AND (NOT N2(0));
+	D(0) <= N1(0) XOR N2(0);
+	P0 <= N1(0) AND (NOT N2(0));
 	
-	S(1) <= C0 XOR N1(1) XOR N2(1);
-	C1 <= (N1(1) AND (NOT N2(1))) OR (C0 AND N1(1)) OR (C0 AND (NOT N2(1)));
+	D(1) <= P0 XOR N1(1) XOR N2(1);
+	P1 <= (N1(1) AND (NOT N2(1))) OR (P0 AND N1(1)) OR (P0 AND (NOT N2(1)));
 	
-	S(2) <= C1 XOR N1(2) XOR N2(2);
-	C2 <= (N1(2) AND (NOT N2(2))) OR (C1 AND N1(2)) OR (C1 AND (NOT N2(2)));
+	D(2) <= P1 XOR N1(2) XOR N2(2);
+	P2 <= (N1(2) AND (NOT N2(2))) OR (P1 AND N1(2)) OR (P1 AND (NOT N2(2)));
 	
-	S(3) <= C2 XOR N1(3) XOR N2(3);
-	S(4) <= (N1(3) AND (NOT N2(3))) OR (C2 AND N1(3)) OR (C2 AND (NOT N2(3)));
+	D(3) <= P2 XOR N1(3) XOR N2(3);
+	P(4) <= (N1(3) AND (NOT N2(3))) OR (P2 AND N1(3)) OR (P2 AND (NOT N2(3)));
 
-	I <= (NOT S(0)) AND (NOT S(1)) AND (NOT S(2)) AND (NOT S(3)) AND (NOT S(4));
-	ME <= S(4);
+	I <= (NOT D(0)) AND (NOT D(1)) AND (NOT D(2)) AND (NOT D(3)) AND (NOT D(4));
+	ME <= D(4);
 	MA <= (NOT I) AND (NOT ME);
 
 END ecu;
