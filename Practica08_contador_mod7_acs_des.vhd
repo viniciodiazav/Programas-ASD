@@ -1,0 +1,64 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+ENTITY p8 IS 
+PORT (
+	CLK, X : IN STD_LOGIC;
+	D7 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
+);
+END p8;
+
+ARCHITECTURE ecu OF p8 IS
+
+	SIGNAL COUNT : STD_LOGIC_VECTOR(27 DOWNTO 0);
+	
+	SIGNAL SEC : STD_LOGIC_VECTOR(2 DOWNTO 0);
+
+BEGIN
+	
+	PROCESS(CLK)
+	BEGIN
+		IF rising_edge(CLK) THEN
+			IF COUNT = "0001011111010111100001000000" THEN
+				COUNT <= (OTHERS => '0');
+				
+				IF X = '1' THEN
+				
+					IF SEC = "110" THEN
+						SEC <= "000";
+					ELSE
+						SEC <= SEC + '1';
+					END IF;
+				
+				ELSE
+				
+					IF SEC = "000" THEN
+						SEC <= "110";
+					ELSE
+						SEC <= SEC - '1';
+					END IF;
+				
+				END IF;
+				
+			ELSE
+				COUNT <= COUNT + '1';
+			END IF;
+		END IF;
+	
+	END PROCESS;
+	
+	WITH SEC SELECT
+		D7 <= "1000000" WHEN "000",
+				"1111001" WHEN "001",
+				"0100100" WHEN "010",
+				"0110000" WHEN "011",
+				"0011001" WHEN "100",
+				"0010010" WHEN "101",
+				"0000010" WHEN "110",
+				"1111111" WHEN OTHERS;
+				
+		
+		
+END ecu;
