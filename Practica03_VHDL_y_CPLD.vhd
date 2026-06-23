@@ -1,8 +1,6 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
--- Díaz Avelar Leonardo Vinicio
--- Oviedo De la Cruz Isaac
 ENTITY p3 IS
 PORT (
 	A : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
